@@ -3,6 +3,7 @@ open import Egads.Category
 module Egads.Category.Isomorphism {o a e} (C : Category o a e) where
 
   open Category C
+  open HomEq
 
   open import Egads.Category.Monomorphism C
   open import Egads.Category.Epimorphism C
@@ -23,8 +24,8 @@ module Egads.Category.Isomorphism {o a e} (C : Category o a e) where
   record IsIso {X Y : Obj} (f : X => Y) : Set (a ⊔ e) where
     field
       f⁻¹ : Y => X
-      f-f⁻¹ : let open Setoid (Hom X X) in f >> f⁻¹ ≈ id′
-      f⁻¹-f : let open Setoid (Hom Y Y) in f⁻¹ >> f ≈ id′
+      f-f⁻¹ : f >> f⁻¹ ≈ id′
+      f⁻¹-f : f⁻¹ >> f ≈ id′
 
     f-isMonic : IsMonic f
     f-isMonic {W} {f0} {f1} eq = begin⟨ Hom W X ⟩
@@ -36,8 +37,6 @@ module Egads.Category.Isomorphism {o a e} (C : Category o a e) where
       f1 >> (f >> f⁻¹)  ≈⟨ refl >>-cong f-f⁻¹ ⟩
       f1 >>    id′      ≈⟨ identity .proj₂ f1 ⟩
       f1                ∎
-      where
-      open HomEq
 
     f-isEpic : IsEpic f
     f-isEpic {Z} {g0} {g1} eq = begin⟨ Hom Y Z ⟩
@@ -49,8 +48,6 @@ module Egads.Category.Isomorphism {o a e} (C : Category o a e) where
       (f⁻¹ >> f) >> g1  ≈⟨ f⁻¹-f >>-cong refl ⟩
            id′   >> g1  ≈⟨ identity .proj₁ g1 ⟩
                     g1  ∎
-      where
-      open HomEq
 
     f⁻¹-isIso : IsIso f⁻¹
     f⁻¹-isIso = record { f⁻¹ = f ; f-f⁻¹ = f⁻¹-f ; f⁻¹-f = f-f⁻¹ }
@@ -84,7 +81,6 @@ module Egads.Category.Isomorphism {o a e} (C : Category o a e) where
     ; _≈_ = _≈_ on _=≈_.f
     ; isEquivalence = On.isEquivalence _=≈_.f isEquivalence
     }
-    where open Setoid (Hom X Y)
 
   AllIso : Set (o ⊔ a ⊔ e)
   AllIso = ∀ {X Y} (f : X => Y) → IsIso f
@@ -103,22 +99,16 @@ module Egads.Category.Isomorphism {o a e} (C : Category o a e) where
   module AllIso (allIso : AllIso) where
     open AllIso-Core allIso public
 
-    module _ {X : Obj} where
-      open Setoid (Hom X X)
+    id⁻¹ : ∀ {X} → id′ ⁻¹ ≈ id′ {X}
+    id⁻¹ = trans (sym (identity .proj₁ (id′ ⁻¹))) (f-f⁻¹ id′)
 
-      id⁻¹ : id′ ⁻¹ ≈ id′ {X}
-      id⁻¹ = trans (sym (identity .proj₁ (id′ ⁻¹))) (f-f⁻¹ id′)
 
-    module _ {X Y Z : Obj} where
-      module Dummy {A B : Obj} = Setoid (Hom A B)
-      open Dummy
-
-      >>⁻¹ : (f : X => Y) (g : Y => Z) → (f >> g) ⁻¹ ≈ g ⁻¹ >> f ⁻¹
-      >>⁻¹ f g = f-isMonic (f >> g) (begin⟨ Hom Z Z ⟩
-        (f >> g) ⁻¹ >> (f >> g)  ≈⟨ f⁻¹-f (f >> g) ⟩
-        id′  ≈⟨ sym (f⁻¹-f g) ⟩
-        g ⁻¹ >> g  ≈⟨ sym (refl >>-cong identity .proj₁ g) ⟩
-        g ⁻¹ >> (id′ >> g)  ≈⟨ sym (refl >>-cong (f⁻¹-f f >>-cong refl)) ⟩
-        g ⁻¹ >> ((f ⁻¹ >> f) >> g)  ≈⟨ refl >>-cong assoc _ _ _ ⟩
-        g ⁻¹ >> (f ⁻¹ >> (f >> g))  ≈⟨ sym (assoc _ _ _) ⟩
-        (g ⁻¹ >> f ⁻¹) >> (f >> g)  ∎)
+    >>⁻¹ : ∀ {X Y Z} (f : X => Y) (g : Y => Z) → (f >> g) ⁻¹ ≈ g ⁻¹ >> f ⁻¹
+    >>⁻¹ {X} {Y} {Z} f g = f-isMonic (f >> g) (begin⟨ Hom Z Z ⟩
+      (f >> g) ⁻¹ >> (f >> g)  ≈⟨ f⁻¹-f (f >> g) ⟩
+      id′  ≈⟨ sym (f⁻¹-f g) ⟩
+      g ⁻¹ >> g  ≈⟨ sym (refl >>-cong identity .proj₁ g) ⟩
+      g ⁻¹ >> (id′ >> g)  ≈⟨ sym (refl >>-cong (f⁻¹-f f >>-cong refl)) ⟩
+      g ⁻¹ >> ((f ⁻¹ >> f) >> g)  ≈⟨ refl >>-cong assoc _ _ _ ⟩
+      g ⁻¹ >> (f ⁻¹ >> (f >> g))  ≈⟨ sym (assoc _ _ _) ⟩
+      (g ⁻¹ >> f ⁻¹) >> (f >> g)  ∎)
