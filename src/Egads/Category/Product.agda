@@ -96,7 +96,12 @@ module Egads.Category.Product where
           A ⇒F C → B ⇒F D → A ×c B ⇒F C ×c D
   map×c F G = < proj₁c >>F F , proj₂c >>F G >c
 
-  assoc×c : ∀ {oa ob oc aa ab ac ea eb ec} {A : Category oa aa ea}
-            {B : Category ob ab eb} {C : Category oc ac ec} →
-            (A ×c B) ×c C ⇒F A ×c (B ×c C)
-  assoc×c = < proj₁c >>F proj₁c , < proj₁c >>F proj₂c , proj₂c >c >c
+  assoc×c⃗ : ∀ {oa ob oc aa ab ac ea eb ec} {A : Category oa aa ea}
+             {B : Category ob ab eb} {C : Category oc ac ec} →
+             (A ×c B) ×c C ⇒F A ×c (B ×c C)
+  assoc×c⃗ = < proj₁c >>F proj₁c , < proj₁c >>F proj₂c , proj₂c >c >c
+
+  assoc×c⃖ : ∀ {oa ob oc aa ab ac ea eb ec} {A : Category oa aa ea}
+             {B : Category ob ab eb} {C : Category oc ac ec} →
+             A ×c (B ×c C) ⇒F (A ×c B) ×c C
+  assoc×c⃖ = < < proj₁c , proj₂c >>F proj₁c >c , proj₂c >>F proj₂c >c

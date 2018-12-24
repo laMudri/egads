@@ -27,7 +27,7 @@ module Egads.Category.Monoidal where
                × < idF , !c >>F unit >c >>F tensor ≈N idF
         associator : _≈N_ {C = (C ×c C) ×c C} {C}
                           (map×c tensor idF >>F tensor)
-                          (assoc×c >>F map×c idF tensor >>F tensor)
+                          (assoc×c⃗ >>F map×c idF tensor >>F tensor)
 
     record IsMonoidal : Set (o ⊔ a ⊔ e) where
       field

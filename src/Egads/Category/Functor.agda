@@ -6,7 +6,7 @@ module Egads.Category.Functor where
   open import Data.Product.Relation.Pointwise.NonDependent
   open import Data.Unit renaming (setoid to 1ₛ)
 
-  open import Function renaming (id to id→)
+  open import Function renaming (id to id→; const to const→)
   open import Function.Equality renaming (id to idₛ; _∘_ to _∘ₛ_)
 
   open import Level
@@ -84,3 +84,20 @@ module Egads.Category.Functor where
     open _⇒F_
     open Category C
     GF = G .obj ∘ F .obj
+
+  module _ {oc od ac ad ec ed} {C : Category oc ac ec} {D : Category od ad ed}
+           where
+    open Category D
+    open HomEq
+
+    constF : Obj → C ⇒F D
+    constF Y = record
+      { obj = const→ Y
+      ; functorOver = record
+        { hom = const id′
+        ; isFunctor = record
+          { hom-id = refl
+          ; hom-comp = λ _ _ → sym (identity .proj₁ id′)
+          }
+        }
+      }

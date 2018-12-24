@@ -9,11 +9,13 @@ module Egads.Category.NaturalTransformation where
   open import Data.Product.Relation.Pointwise.NonDependent
   open import Data.Unit renaming (setoid to 1ₛ)
 
+  open import Function using (_on_)
   open import Function.Equality hiding (id; setoid)
 
   open import Level
 
   open import Relation.Binary
+  import Relation.Binary.On as On
   open import Relation.Binary.SetoidReasoning
 
   module _ {oc od ac ad ec ed} {C : Category oc ac ec} {D : Category od ad ed}
@@ -120,6 +122,65 @@ module Egads.Category.NaturalTransformation where
         open _⇒F_
       open _⇒N_ α⁻¹ public using () renaming (square to square⁻¹)
 
+      isNaturalIso⁻¹ : IsNaturalIso α⁻¹
+      isNaturalIso⁻¹ = record { f⁻¹ = η ; f-f⁻¹ = η⁻¹-η ; f⁻¹-f = η-η⁻¹ }
+
+      inv : G ≈N F
+      inv = record { α = α⁻¹ ; isNaturalIso = isNaturalIso⁻¹ }
+
+    _≈Nₛ_ : (F G : C ⇒F D) → Setoid (oc ⊔ ac ⊔ ad ⊔ ed) (oc ⊔ ed)
+    F ≈Nₛ G = record
+      { Carrier = F ≈N G
+      ; _≈_ = _≈_ on α
+      ; isEquivalence = On.isEquivalence α isEquivalence
+      }
+      where
+      open Setoid (F ⇒Nₛ G)
+      open _≈N_
+
+    id≈N : ∀ {F} → F ≈N F
+    id≈N = record
+      { α = idN
+      ; isNaturalIso = record
+        { f⁻¹ = id′
+        ; f-f⁻¹ = identity .proj₁ _
+        ; f⁻¹-f = identity .proj₁ _
+        }
+      }
+      where
+      open Category D
+
+    _>>≈N_ : ∀ {F G H} → F ≈N G → G ≈N H → F ≈N H
+    ι >>≈N κ = record
+      { α = ι .α >>N κ .α
+      ; isNaturalIso = record
+        { f⁻¹ = (α⁻¹ κ >>N α⁻¹ ι) .η
+        ; f-f⁻¹ = begin⟨ Hom _ _ ⟩
+          (ι .η >> κ .η) >> (κ .η⁻¹ >> ι .η⁻¹)  ≈⟨ assoc _ _ _ ⟩
+          ι .η >> (κ .η >> (κ .η⁻¹ >> ι .η⁻¹))
+                                   ≈⟨ refl >>-cong sym (assoc _ _ _) ⟩
+          ι .η >> ((κ .η >> κ .η⁻¹) >> ι .η⁻¹)
+                                   ≈⟨ refl >>-cong κ .η-η⁻¹ >>-cong refl ⟩
+          ι .η >> (id′ >> ι .η⁻¹)  ≈⟨ refl >>-cong identity .proj₁ _ ⟩
+          ι .η >> ι .η⁻¹           ≈⟨ ι .η-η⁻¹ ⟩
+          id′                      ∎
+        ; f⁻¹-f = begin⟨ Hom _ _ ⟩
+          (κ .η⁻¹ >> ι .η⁻¹) >> (ι .η >> κ .η)  ≈⟨ assoc _ _ _ ⟩
+          κ .η⁻¹ >> (ι .η⁻¹ >> (ι .η >> κ .η))
+                                   ≈⟨ refl >>-cong sym (assoc _ _ _) ⟩
+          κ .η⁻¹ >> ((ι .η⁻¹ >> ι .η) >> κ .η)
+                                   ≈⟨ refl >>-cong ι .η⁻¹-η >>-cong refl ⟩
+          κ .η⁻¹ >> (id′ >> κ .η)  ≈⟨ refl >>-cong identity .proj₁ _ ⟩
+          κ .η⁻¹ >> κ .η           ≈⟨ κ .η⁻¹-η ⟩
+          id′                      ∎
+        }
+      }
+      where
+      open Category D
+      open HomEq
+      open _≈N_
+      open _⇒N_
+
   module _ {oc od ac ad ec ed} (C : Category oc ac ec) (D : Category od ad ed)
            where
     _⇒Fc_ : Category (oc ⊔ od ⊔ ac ⊔ ad ⊔ ec ⊔ ed)
@@ -147,9 +208,42 @@ module Egads.Category.NaturalTransformation where
       open HomEq
       open _⇒N_
 
+    -- Different but equivalent to `core (C ⇒Fc D)`
     _⇒Fg_ : Groupoid (oc ⊔ od ⊔ ac ⊔ ad ⊔ ec ⊔ ed)
-                                (oc ⊔ ac ⊔ ad ⊔ ed) (oc ⊔ ed)
-    _⇒Fg_ = core _⇒Fc_
+                     (oc ⊔ ac ⊔ ad ⊔ ed) (oc ⊔ ed)
+    _⇒Fg_ = record
+      { category = record
+        { Obj = C ⇒F D
+        ; categoryOverObjs = record
+          { Hom = _≈Nₛ_
+          ; categoryOverHoms = record
+            { id = const id≈N
+            ; comp = record
+              { _⟨$⟩_ = uncurry _>>≈N_
+              ; cong = uncurry λ ιe κe → ιe >>-cong κe
+              }
+            ; isCategory = record
+              { identity = λ where
+                .proj₁ κ → identity .proj₁ _
+                .proj₂ ι → identity .proj₂ _
+              ; assoc = λ θ ι κ → assoc _ _ _
+              }
+            }
+          }
+        }
+      ; allIso = λ f → record
+        { f⁻¹ = inv f
+        ; f-f⁻¹ = f .η-η⁻¹
+        ; f⁻¹-f = f .η⁻¹-η
+        }
+      }
+      where
+      open _≈N_
+      open _⇒N_
+      open _⇒F_
+      open Category D
+      open HomEq
+
     open Groupoid _⇒Fg_ public using ()
       renaming (setoid to _⇒Fₛ_)
 
@@ -188,6 +282,20 @@ module Egads.Category.NaturalTransformation where
     where
     module A = Category A
     module B = Category B
+    open Category C
+    open HomEq
+    open _⇒F_
+    open _⇒N_
+
+  horiz-compN : ∀ {oa ob oc aa ab ac ea eb ec} {A : Category oa aa ea}
+                {B : Category ob ab eb} {C : Category oc ac ec}
+                {F F′ : A ⇒F B} {G G′ : B ⇒F C} →
+                F ⇒Nₛ F′ ×ₛ G ⇒Nₛ G′ ⟶ (F >>F G) ⇒Nₛ (F′ >>F G′)
+  horiz-compN {A = A} {B} {C} {F} {F′} {G} {G′} = record
+    { _⟨$⟩_ = uncurry _vvN_
+    ; cong = uncurry λ αα ββ → G .hom .cong αα >>-cong ββ
+    }
+    where
     open Category C
     open HomEq
     open _⇒F_
