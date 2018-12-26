@@ -1,6 +1,5 @@
 module index where
 
-import Egads.2Category
 import Egads.Category
 import Egads.Category.Endofunctor
 import Egads.Category.Epimorphism
@@ -18,6 +17,14 @@ import Egads.Category.Op
 import Egads.Category.Product
 import Egads.Category.Setoid
 import Egads.Category.SmallCategories
+import Egads.Category.Thin
 import Egads.Category.Unit
+
 import Egads.EnrichedCategory
+
+import Egads.2Category
+
+import Egads.Order
 import Egads.Structure
+
+import Relation.Binary.Prop
