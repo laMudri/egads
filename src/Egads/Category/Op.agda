@@ -30,3 +30,17 @@ module Egads.Category.Op where
 
   infixl 9 _ᵒᵖ
   _ᵒᵖ = op
+
+  opF : ∀ {oc od ac ad ec ed} {C : Category oc ac ec} {D : Category od ad ed} →
+        C ⇒F D → C ᵒᵖ ⇒F D ᵒᵖ
+  opF F = record
+    { obj = obj
+    ; functorOver = record
+      { hom = hom
+      ; isFunctor = record
+        { hom-id = hom-id
+        ; hom-comp = flip hom-comp
+        }
+      }
+    }
+    where open _⇒F_ F

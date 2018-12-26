@@ -1,6 +1,7 @@
 module index where
 
 import Egads.Category
+import Egads.Category.Adjunction
 import Egads.Category.Endofunctor
 import Egads.Category.Epimorphism
 import Egads.Category.Functor
