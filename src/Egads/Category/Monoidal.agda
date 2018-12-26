@@ -1,20 +1,12 @@
 module Egads.Category.Monoidal where
 
+  open import Egads.Prelude
+
   open import Egads.Category
   open import Egads.Category.Functor
   open import Egads.Category.NaturalTransformation
   open import Egads.Category.Unit
   open import Egads.Category.Product
-
-  open import Data.Product
-  open import Data.Product.Relation.Pointwise.NonDependent
-  open import Data.Unit renaming (setoid to 1ₛ)
-
-  open import Function.Equality hiding (id)
-
-  open import Level
-
-  open import Relation.Binary
 
   module _ {o a e} (C : Category o a e) where
     open Category C

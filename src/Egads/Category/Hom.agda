@@ -2,19 +2,12 @@ open import Egads.Category
 
 module Egads.Category.Hom {o a e} (C : Category o a e) where
 
+  open import Egads.Prelude
+
   open import Egads.Category.Functor
   open import Egads.Category.Op
   open import Egads.Category.Product
   open import Egads.Category.Setoid
-
-  open import Data.Product
-  open import Data.Product.Relation.Pointwise.NonDependent
-  open import Data.Unit
-
-  open import Function.Equality hiding (id)
-
-  open import Relation.Binary
-  open import Relation.Binary.SetoidReasoning
 
   open Category C
   open HomEq

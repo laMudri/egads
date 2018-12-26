@@ -4,15 +4,7 @@ module Egads.Category.Monomorphism {o a e} (C : Category o a e) where
 
   open Category C
 
-  open import Data.Product
-  open import Data.Product.Relation.Pointwise.NonDependent
-  open import Data.Unit renaming (setoid to 1ₛ)
-
-  open import Function.Equality hiding (id)
-
-  open import Level
-
-  open import Relation.Binary
+  open import Egads.Prelude
 
   IsMonic : ∀ {X Y : Obj} → X => Y → Set (o ⊔ a ⊔ e)
   IsMonic {X} {Y} g = ∀ {W} {f0 f1 : W => X} →

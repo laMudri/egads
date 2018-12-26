@@ -1,14 +1,6 @@
 module Egads.Category where
 
-  open import Data.Product
-  open import Data.Product.Relation.Pointwise.NonDependent
-  open import Data.Unit renaming (setoid to 1ₛ)
-
-  open import Function.Equality hiding (id)
-
-  open import Level
-
-  open import Relation.Binary
+  open import Egads.Prelude
 
   record IsCategory {o a e} {Obj : Set o} (Hom : (X Y : Obj) → Setoid a e)
                     (id : ∀ {X} → 1ₛ ⟶ Hom X X)

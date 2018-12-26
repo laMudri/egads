@@ -1,17 +1,10 @@
 module Egads.Category.Unit where
 
+  open import Egads.Prelude
+
   open import Egads.Category
   open import Egads.Category.Functor
 
-  open import Data.Product
-  open import Data.Product.Relation.Pointwise.NonDependent
-  open import Data.Unit renaming (setoid to 1ₛ)
-
-  open import Function.Equality renaming (id to idₛ)
-
-  open import Level
-
-  open import Relation.Binary
   open import Relation.Binary.PropositionalEquality
 
   1c : Category zero zero zero

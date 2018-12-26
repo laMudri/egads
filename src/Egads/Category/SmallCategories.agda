@@ -1,21 +1,12 @@
 module Egads.Category.SmallCategories where
 
+  open import Egads.Prelude
+
   open import Egads.Category
   open import Egads.Category.Functor
   open import Egads.Category.Groupoid
   open import Egads.Category.Isomorphism
   open import Egads.Category.NaturalTransformation
-
-  open import Data.Product
-  open import Data.Product.Relation.Pointwise.NonDependent
-  open import Data.Unit renaming (setoid to 1ₛ)
-
-  open import Function.Equality
-
-  open import Level
-
-  open import Relation.Binary
-  open import Relation.Binary.SetoidReasoning
 
   CAT : ∀ o a e → Category (suc (o ⊔ a ⊔ e)) (o ⊔ a ⊔ e) (o ⊔ a ⊔ e)
   CAT o a e = record

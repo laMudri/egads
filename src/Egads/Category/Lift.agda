@@ -1,19 +1,11 @@
 module Egads.Category.Lift where
 
+  open import Egads.Prelude
+
   open import Egads.Category
   open import Egads.Category.Functor
   open import Egads.Category.NaturalTransformation
   open import Egads.Category.SmallCategories
-
-  open import Data.Product
-  open import Data.Product.Relation.Pointwise.NonDependent
-  open import Data.Unit renaming (setoid to 1ₛ)
-
-  open import Function.Equality hiding (id)
-
-  open import Level
-
-  open import Relation.Binary
 
   liftF : ∀ {o a e} ol al el → CAT o a e ⇒F CAT (o ⊔ ol) (a ⊔ al) (e ⊔ el)
   liftF ol al el = record

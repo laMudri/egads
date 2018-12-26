@@ -5,21 +5,14 @@ module Egads.Category.Isomorphism {o a e} (C : Category o a e) where
   open Category C
   open HomEq
 
+  open import Egads.Prelude
+
   open import Egads.Category.Monomorphism C
   open import Egads.Category.Epimorphism C
 
-  open import Data.Product
-  open import Data.Product.Relation.Pointwise.NonDependent
-  open import Data.Unit renaming (setoid to 1ₛ)
-
   open import Function using (_on_)
-  open import Function.Equality hiding (id)
 
-  open import Level
-
-  open import Relation.Binary
   import Relation.Binary.On as On
-  open import Relation.Binary.SetoidReasoning
 
   record IsIso {X Y : Obj} (f : X => Y) : Set (a ⊔ e) where
     field

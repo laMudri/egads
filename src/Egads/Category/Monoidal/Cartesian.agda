@@ -2,6 +2,8 @@
 
 module Egads.Category.Monoidal.Cartesian where
 
+  open import Egads.Prelude
+
   open import Egads.Category
   open import Egads.Category.Functor
   open import Egads.Category.Lift
@@ -10,16 +12,6 @@ module Egads.Category.Monoidal.Cartesian where
   open import Egads.Category.Product
   open import Egads.Category.SmallCategories
   open import Egads.Category.Unit
-
-  open import Data.Product
-  open import Data.Product.Relation.Pointwise.NonDependent
-  open import Data.Unit renaming (setoid to 1ₛ)
-
-  open import Function.Equality hiding (id)
-
-  open import Level
-
-  open import Relation.Binary
 
   ×F : ∀ {o a e} → CAT o a e ×c CAT o a e ⇒F CAT o a e
   ×F {o} {a} {e} = record

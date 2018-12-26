@@ -1,17 +1,11 @@
 module Egads.Category.Functor where
 
+  open import Egads.Prelude
+
   open import Egads.Category
 
-  open import Data.Product
-  open import Data.Product.Relation.Pointwise.NonDependent
-  open import Data.Unit renaming (setoid to 1ₛ)
-
   open import Function renaming (id to id→; const to const→)
-  open import Function.Equality renaming (id to idₛ; _∘_ to _∘ₛ_)
 
-  open import Level
-
-  open import Relation.Binary
   open import Relation.Binary.PropositionalEquality as ≡ using (_≡_; _≗_)
 
   module _ {oc ac ec od ad ed} (C : Category oc ac ec) (D : Category od ad ed)

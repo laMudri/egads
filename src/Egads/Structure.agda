@@ -1,15 +1,10 @@
 module Egads.Structure where
 
+  open import Egads.Prelude
+
   open import Egads.Category
   open import Egads.Category.Groupoid
   open import Egads.Category.Isomorphism
-
-  open import Data.Product
-  open import Data.Unit
-
-  open import Level
-
-  open import Relation.Binary using (Setoid)
 
   Monoid : ∀ a e → Set (suc (a ⊔ e))
   Monoid a e = CategoryOverObjs a e ⊤

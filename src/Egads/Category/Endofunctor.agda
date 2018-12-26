@@ -2,6 +2,8 @@ open import Egads.Category
 
 module Egads.Category.Endofunctor {o a e} (C : Category o a e) where
 
+  open import Egads.Prelude
+
   open import Egads.Category.Functor
   open import Egads.Category.Isomorphism
   open import Egads.Category.Monoidal
@@ -9,16 +11,6 @@ module Egads.Category.Endofunctor {o a e} (C : Category o a e) where
   open import Egads.Category.Product
   open import Egads.Category.SmallCategories
   open import Egads.Category.Unit
-
-  open import Data.Product
-  open import Data.Unit
-
-  open import Function.Equality
-
-  open import Level
-
-  open import Relation.Binary
-  open import Relation.Binary.SetoidReasoning
 
   private
     module CAT {o a e} where

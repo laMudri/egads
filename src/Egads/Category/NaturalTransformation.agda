@@ -1,22 +1,15 @@
 module Egads.Category.NaturalTransformation where
 
+  open import Egads.Prelude
+
   open import Egads.Category
   open import Egads.Category.Functor
   open import Egads.Category.Isomorphism as Iso using ()
   open import Egads.Category.Groupoid
 
-  open import Data.Product
-  open import Data.Product.Relation.Pointwise.NonDependent
-  open import Data.Unit renaming (setoid to 1ₛ)
-
   open import Function using (_on_)
-  open import Function.Equality hiding (id; setoid)
 
-  open import Level
-
-  open import Relation.Binary
   import Relation.Binary.On as On
-  open import Relation.Binary.SetoidReasoning
 
   module _ {oc od ac ad ec ed} {C : Category oc ac ec} {D : Category od ad ed}
            where

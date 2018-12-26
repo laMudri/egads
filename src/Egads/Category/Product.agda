@@ -1,17 +1,9 @@
 module Egads.Category.Product where
 
+  open import Egads.Prelude
+
   open import Egads.Category
   open import Egads.Category.Functor
-
-  open import Data.Product
-  open import Data.Product.Relation.Pointwise.NonDependent
-  open import Data.Unit renaming (setoid to 1ₛ)
-
-  open import Function.Equality renaming (id to idₛ)
-
-  open import Level
-
-  open import Relation.Binary
 
   infixr 7 _×c_
 
@@ -24,8 +16,8 @@ module Egads.Category.Product where
         (cX , dX) (cY , dY) → C .Hom cX cY ×ₛ D .Hom dX dY
       ; categoryOverHoms = record
         { id = < C .id , D .id >ₛ
-        ; comp = < C .comp ∘ (proj₁ₛ ×-⟶ proj₁ₛ)
-                 , D .comp ∘ (proj₂ₛ ×-⟶ proj₂ₛ)
+        ; comp = < C .comp ∘ₛ (proj₁ₛ ×-⟶ proj₁ₛ)
+                 , D .comp ∘ₛ (proj₂ₛ ×-⟶ proj₂ₛ)
                  >ₛ
         ; isCategory = record
           { identity = λ where

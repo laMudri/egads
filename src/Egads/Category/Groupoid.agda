@@ -1,18 +1,9 @@
 module Egads.Category.Groupoid where
 
+  open import Egads.Prelude
+
   open import Egads.Category
   open import Egads.Category.Isomorphism
-
-  open import Data.Product
-  open import Data.Product.Relation.Pointwise.NonDependent
-  open import Data.Unit renaming (setoid to 1ₛ)
-
-  open import Function.Equality hiding (id; setoid)
-
-  open import Level
-
-  open import Relation.Binary
-  import Relation.Binary.EqReasoning as EqR
 
   record Groupoid o a e : Set (suc (o ⊔ a ⊔ e)) where
     field
@@ -52,7 +43,7 @@ module Egads.Category.Groupoid where
             { _⟨$⟩_ = λ where
               (i , j) .f → i .f >> j .f
               (i , j) .isIso .f⁻¹ → j .f⁻¹ >> i .f⁻¹
-              (i , j) .isIso .f-f⁻¹ → let open EqR (Hom X X) in begin
+              (i , j) .isIso .f-f⁻¹ → begin⟨ Hom X X ⟩
                 (i .f >> j .f) >> (j .f⁻¹ >> i .f⁻¹)  ≈⟨ sym (assoc _ _ _) ⟩
                 ((i .f >> j .f) >> j .f⁻¹) >> i .f⁻¹
                   ≈⟨ assoc _ _ _ >>-cong refl ⟩
@@ -61,7 +52,7 @@ module Egads.Category.Groupoid where
                 (i .f >> id′) >> i .f⁻¹  ≈⟨ identity .proj₂ _ >>-cong refl ⟩
                 i .f >> i .f⁻¹  ≈⟨ i .f-f⁻¹ ⟩
                 id′  ∎
-              (i , j) .isIso .f⁻¹-f → let open EqR (Hom Z Z) in begin
+              (i , j) .isIso .f⁻¹-f → begin⟨ Hom Z Z ⟩
                 (j .f⁻¹ >> i .f⁻¹) >> (i .f >> j .f)  ≈⟨ sym (assoc _ _ _) ⟩
                 ((j .f⁻¹ >> i .f⁻¹) >> i .f) >> j .f
                   ≈⟨ assoc _ _ _ >>-cong refl ⟩

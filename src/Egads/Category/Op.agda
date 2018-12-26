@@ -1,15 +1,11 @@
 module Egads.Category.Op where
 
+  open import Egads.Prelude
+
   open import Egads.Category
+  open import Egads.Category.Functor
 
-  open import Data.Product
-  open import Data.Product.Relation.Pointwise.NonDependent
-  open import Data.Unit
-
-  open import Function hiding (id; _∘_)
-  open import Function.Equality hiding (id; flip)
-
-  open import Relation.Binary
+  open import Function using (flip)
 
   op : ∀ {o a e} → Category o a e → Category o a e
   op C = record
@@ -18,7 +14,7 @@ module Egads.Category.Op where
       { Hom = flip Hom
       ; categoryOverHoms = record
         { id = id
-        ; comp = comp ∘ swapₛ
+        ; comp = comp ∘ₛ swapₛ
         ; isCategory = record
           { identity = λ where
             .proj₁ → identity .proj₂

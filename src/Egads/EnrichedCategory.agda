@@ -8,14 +8,10 @@ module Egads.EnrichedCategory {ov av ev} (V : MonCat ov av ev) where
                ; unitor; associator)
   open HomEq
 
+  open import Egads.Prelude
+
   open import Egads.Category.Functor
   open import Egads.Category.NaturalTransformation
-
-  open import Data.Product
-
-  open import Function.Equality hiding (id)
-
-  open import Level
 
   open _⇒F_
   open _≈N_
