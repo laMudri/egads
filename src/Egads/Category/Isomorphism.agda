@@ -12,7 +12,7 @@ module Egads.Category.Isomorphism {o a e} (C : Category o a e) where
 
   open import Function using (_on_)
 
-  import Relation.Binary.On as On
+  import Relation.Binary.Construct.On as On
 
   record IsIso {X Y : Obj} (f : X => Y) : Set (a ⊔ e) where
     field

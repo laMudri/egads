@@ -5,7 +5,7 @@ module Egads.Order where
   open import Egads.Category
   open import Egads.Category.Thin
 
-  open import Relation.Binary.Simple
+  open import Relation.Binary.Construct.Always renaming (setoid to ⊤ₛ)
 
   record Preorder (o a e : Level) : Set (suc (o ⊔ a) ⊔ e) where
     field
@@ -13,7 +13,7 @@ module Egads.Order where
       _=>_ : (X Y : Obj) → Set a
 
     Hom : (X Y : Obj) → Setoid a e
-    Hom X Y = Always-setoid (X => Y)
+    Hom X Y = ⊤ₛ (X => Y) _
 
     field
       categoryOverHoms : CategoryOverHoms Hom

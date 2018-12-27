@@ -9,7 +9,7 @@ module Egads.Category.NaturalTransformation where
 
   open import Function using (_on_)
 
-  import Relation.Binary.On as On
+  import Relation.Binary.Construct.On as On
 
   module _ {oc od ac ad ec ed} {C : Category oc ac ec} {D : Category od ad ed}
            where

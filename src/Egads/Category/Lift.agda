@@ -10,12 +10,12 @@ module Egads.Category.Lift where
   liftF : ∀ {o a e} ol al el → CAT o a e ⇒F CAT (o ⊔ ol) (a ⊔ al) (e ⊔ el)
   liftF ol al el = record
     { obj = λ C → let open Category C in record
-      { Obj = Lift {ℓ = ol} Obj
+      { Obj = Lift ol Obj
       ; categoryOverObjs = record
         { Hom = λ where
-          (lift X) (lift Y) .Carrier → Lift {ℓ = al} (Hom X Y .Carrier)
+          (lift X) (lift Y) .Carrier → Lift al (Hom X Y .Carrier)
           (lift X) (lift Y) ._≈_ (lift f) (lift g) →
-            Lift {ℓ = el} (Hom X Y ._≈_ f g)
+            Lift el (Hom X Y ._≈_ f g)
           (lift X) (lift Y) .isEquivalence .refl → lift (Hom X Y .refl)
           (lift X) (lift Y) .isEquivalence .sym (lift fg) →
             lift (Hom X Y .sym fg)
